@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Eye, EyeOff, User, Mail, Phone, Lock, AtSign, ChevronRight, Newspaper } from "lucide-react";
+import API from "../config/api";
 
 function Register() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function Register() {
     }
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", form);
+      const res = await axios.post(`${API}/api/auth/register`, form,);
       toast.success(res.data.message || "Account created!");
       setTimeout(() => navigate("/login"), 1200);
     } catch (err) {

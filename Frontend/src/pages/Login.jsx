@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Eye, EyeOff, Lock, Mail, ChevronRight, Newspaper } from "lucide-react";
+import API from "../config/api";
+
 
 function Login() {
   const navigate = useNavigate();
@@ -14,21 +16,21 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const login = async (e) => {
+ const login = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      const res = await axios.post("http://localhost:5000/api/auth/login", form);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      toast.success("Login successful");
-      navigate("/dashboard");
+        setLoading(true);
+        const res = await API.post("/api/auth/login", form);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        toast.success("Login Successful!");
+        navigate("/dashboard");
     } catch (error) {
-      toast.error("Invalid email or password");
+        toast.error(error.response?.data?.message || "Login Failed");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F1F5F9] font-sans selection:bg-blue-100">
