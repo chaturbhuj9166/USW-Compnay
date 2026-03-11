@@ -19,18 +19,24 @@ function Login() {
  const login = async (e) => {
     e.preventDefault();
     try {
-        setLoading(true);
-        const res = await API.post("/api/auth/login", form);
+      setLoading(true);
+      const res = await API.post("/api/auth/login", form);
+      console.log("Login response:", res.data); // Debugging output
+      if (res.data && res.data.token && res.data.user) {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
         toast.success("Login Successful!");
         navigate("/dashboard");
+      } else {
+        toast.error("Invalid response from server. Please try again later.");
+      }
     } catch (error) {
-        toast.error(error.response?.data?.message || "Login Failed");
+      console.error("Login error:", error, error.response);
+      toast.error(error.response?.data?.message || "Login Failed");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F1F5F9] font-sans selection:bg-blue-100">
