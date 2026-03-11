@@ -8,7 +8,13 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",   // local frontend (Vite)
+    "https://usw-compnay.onrender.com" // deployed frontend
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // ✅ यह लाइन सबसे ज़रूरी है: 'uploads' फोल्डर को पब्लिक एक्सेस देने के लिए
