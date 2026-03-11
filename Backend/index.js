@@ -32,11 +32,11 @@ app.use("/api/news", newsRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
 // Frontend static build
-// app.use(express.static(path.join(__dirname, "../Frontend/dist")));
+app.use(express.static(path.join(__dirname, "../Frontend/dist")));
 
-// app.get(/.*/, (req, res) => {
-//   res.sendFile(path.join(__dirname, "../Frontend/dist/index.html"));
-// });
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "../Frontend/dist/index.html"));
+});
 
 const PORT = process.env.PORT || 5000;
 
