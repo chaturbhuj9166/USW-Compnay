@@ -1,0 +1,80 @@
+import Journalist from "../models/Journalist.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+export const register = async (req, res) => {
+  try {
+
+    const { name, email, username, phone, password } = req.body;
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const journalist = new Journalist({
+      name,
+      email,
+      username,
+      phone,
+      password: hashPassword
+    });
+
+    await journalist.save();
+
+    res.json({ message: "Journalist Registered" });
+
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+
+
+export const login = async (req, res) => {
+
+  try {
+
+    const { email, password } = req.body;
+
+    const user = await Journalist.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const token = jwt.sign(
+      { id: user._id },
+      "secretkey",
+      { expiresIn: "1d" }
+    );
+
+    res.json({
+      token,
+      user
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Login error"
+    });
+
+  }
+
+};
+
+export const logout = async (req, res) => {
+  try {
+
+    res.status(200).json({
+      success: true,
+      message: "Logout successful"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: "Logout failed"
+    });
+
+  }
+};
