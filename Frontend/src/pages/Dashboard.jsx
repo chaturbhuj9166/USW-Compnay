@@ -16,14 +16,16 @@ function Dashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/news");
+   const res = await axios.get("http://localhost:5000/api/dashboard");
         const newsList = res.data || [];
-        setData({
-          totalNews: newsList.length,
-          journalists: 1, 
-          categories: [...new Set(newsList.map(item => item.category))].length,
-          recentNews: newsList
-        });
+   
+
+setData({
+  totalNews: res.data.totalNews,
+  journalists: res.data.journalists,
+  categories: res.data.categories,
+  recentNews: res.data.recentNews
+});
       } catch (err) { console.error(err); } finally { setLoading(false); }
     };
     fetchDashboardData();

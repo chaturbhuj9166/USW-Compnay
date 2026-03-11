@@ -23,22 +23,35 @@ function Register() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (form.phone.length !== 10) {
-      return toast.error("Phone number must be 10 digits");
-    }
-    setLoading(true);
-    try {
-      const res = await axios.post(`${API}/api/auth/register`, form,);
-      toast.success(res.data.message || "Account created!");
-      setTimeout(() => navigate("/login"), 1200);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Registration failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (form.phone.length !== 10) {
+    return toast.error("Phone number must be 10 digits");
+  }
+
+  setLoading(true);
+
+  try {
+
+    const res = await API.post("/api/auth/register", form);
+
+    toast.success(res.data.message || "Account created!");
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 1200);
+
+  } catch (err) {
+
+    toast.error(err.response?.data?.message || "Registration failed");
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F1F5F9] font-sans selection:bg-blue-100 p-4">
