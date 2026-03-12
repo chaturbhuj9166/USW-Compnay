@@ -2,10 +2,8 @@ import Journalist from "../models/Journalist.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-
 export const register = async (req, res) => {
   try {
-
     const { name, email, username, phone, password } = req.body;
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -15,26 +13,19 @@ export const register = async (req, res) => {
       email,
       username,
       phone,
-      password: hashPassword
+      password: hashPassword,
     });
 
     await journalist.save();
 
     res.json({ message: "Journalist Registered" });
-
   } catch (error) {
-
     res.status(500).json(error);
-
   }
 };
 
-
-
 export const login = async (req, res) => {
-
   try {
-
     const { email, password } = req.body;
 
     const user = await Journalist.findOne({ email });
@@ -52,32 +43,24 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET || "fallback_secret",
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     res.status(200).json({
       success: true,
       token,
-      user
+      user,
     });
-
   } catch (error) {
-
     res.status(500).json({
-      message: "Login error"
+      message: "Login error",
     });
-
   }
-
 };
 
-
-
 export const logout = async (req, res) => {
-
   res.status(200).json({
     success: true,
-    message: "Logout successful"
+    message: "Logout successful",
   });
-
 };
