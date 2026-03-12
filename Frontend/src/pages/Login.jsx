@@ -14,49 +14,43 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const login = async (e) => {
-    e.preventDefault();
+ const login = async (e) => {
+  e.preventDefault();
 
-    try {
-      setLoading(true);
+  try {
 
-      const res = await API.post(
-        "/api/auth/login",
-        form,
-        { withCredentials: true }
-      );
+    setLoading(true);
 
-      console.log("Login response:", res.data);
+    const res = await API.post("/api/auth/login", form, {
+      withCredentials: true
+    });
 
-      if (res.data && res.data.user) {
+    console.log(res.data);
 
-        // user info store (token cookie me hai backend par)
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+    if (res.data && res.data.user) {
 
-        toast.success("Login Successful!");
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-        navigate("/dashboard");
+      toast.success("Login Successful!");
 
-      } else {
+      navigate("/dashboard");
 
-        toast.error("Invalid response from server");
+    } else {
 
-      }
-
-    } catch (error) {
-
-      console.error("Login error:", error);
-
-      toast.error(
-        error.response?.data?.message || "Login Failed"
-      );
-
-    } finally {
-
-      setLoading(false);
+      toast.error("Invalid response from server");
 
     }
-  };
+
+  } catch (error) {
+
+    toast.error(error.response?.data?.message || "Login Failed");
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F1F5F9] font-sans selection:bg-blue-100">
