@@ -11,7 +11,10 @@ function NewsList() {
 
   const getNews = async () => {
     try {
-      const res = await API.get("http://localhost:5000/api/news");
+
+
+      const res = await API.get("/api/news");
+
       setNews(res.data);
     } catch (error) {
       console.error("Error fetching news", error);

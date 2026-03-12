@@ -10,7 +10,9 @@ function ViewNews() {
   const [news, setNews] = useState(null);
 
   useEffect(() => {
+
     API.get(`/api/news/single/${id}`).then((res) => setNews(res.data));
+
   }, [id]);
 
   if (!news)

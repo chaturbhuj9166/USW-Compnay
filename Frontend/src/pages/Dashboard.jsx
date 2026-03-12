@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../config/api";
-
 import { motion } from "framer-motion";
 import {
   Newspaper,
@@ -31,6 +30,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
+
         const res = await API.get("/api/dashboard");
         const newsList = res.data || [];
 

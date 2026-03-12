@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+
 import API from "../config/api"
+
 import { Save, ArrowLeft, Loader2, Tag, Type, AlignLeft, Camera, X } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -56,7 +58,10 @@ function EditNews() {
     if (imageFile) { dataToSend.append("image", imageFile); }
 
     try {
-      await axios.put(`/api/news/update/${id}`, dataToSend, {
+
+
+      await API.put(`/api/news/update/${id}`, dataToSend, {
+
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Article Updated Successfully! ✨");
