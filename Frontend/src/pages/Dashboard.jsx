@@ -92,7 +92,7 @@ setData({
                       {news.image && (news.image.includes(".mp4") || news.image.includes(".mov")) ? (
                         <div className="bg-slate-900 w-full h-full flex items-center justify-center"><PlayCircle className="text-white" size={16}/></div>
                       ) : news.image ? (
-                        /* ✅ Cloudinary URL सीधा इस्तेमाल करें */
+                      
                         <img src={news.image} className="w-full h-full object-cover" alt=""/>
                       ) : <ImageIcon size={18} className="text-slate-300"/>}
                     </div>

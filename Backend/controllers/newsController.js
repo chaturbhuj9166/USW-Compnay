@@ -1,18 +1,17 @@
 import News from "../models/News.js";
 
-// ✅ न्यूज़ पोस्ट करने के लिए (Cloudinary के साथ)
+
 export const postNews = async (req, res) => {
   try {
     const { title, description, category, journalistName } = req.body;
     
-    // ✅ लोकल 'filename' की जगह क्लाउडनरी का पूरा 'path' (URL) लें
     const imageUrl = req.file ? req.file.path : ""; 
 
     const news = new News({
       title,
       description,
       category,
-      image: imageUrl, // अब यहाँ https://res.cloudinary.com/... वाला लिंक सेव होगा
+      image: imageUrl,
       contributor: journalistName || "Admin" 
     });
 
@@ -24,13 +23,13 @@ export const postNews = async (req, res) => {
   }
 };
 
-// ✅ न्यूज़ अपडेट करने के लिए
+
 export const updateNews = async (req, res) => {
   try {
     const { title, description, category } = req.body;
     let updateFields = { title, description, category };
 
-    // ✅ अगर नई इमेज है, तो क्लाउडनरी का नया 'path' अपडेट करें
+   
     if (req.file) {
       updateFields.image = req.file.path;
     }
@@ -47,17 +46,17 @@ export const updateNews = async (req, res) => {
   }
 };
 
-// ✅ डैशबोर्ड स्टेट्स (जो तेरे स्क्रीनशॉट में 3, 1, 2 दिख रहे हैं)
+
 export const getDashboardStats = async (req, res) => {
   try {
     const totalNews = await News.countDocuments();
-    // अलग मॉडल की जगह न्यूज़ से ही अलग-अलग रिपोर्टर्स के नाम गिन लो
+  
     const journalists = await News.distinct("contributor"); 
     const categories = await News.distinct("category");
 
     res.json({
       totalNews,
-      journalists: journalists.length, // अब यह सही काउंट दिखाएगा
+      journalists: journalists.length,
       categories: categories.length
     });
   } catch (error) {
@@ -65,10 +64,9 @@ export const getDashboardStats = async (req, res) => {
   }
 };
 
-// बाकी getNews, getNewsById, और deleteNews एकदम सही हैं
 export const getNews = async (req, res) => {
   try {
-    const news = await News.find().sort({ createdAt: -1 }); // नई न्यूज़ ऊपर दिखाने के लिए
+    const news = await News.find().sort({ createdAt: -1 }); 
     res.json(news);
   } catch (error) {
     res.status(500).json({ message: "Error fetching news" });

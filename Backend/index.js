@@ -17,7 +17,6 @@ app.use(cookieParser());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// CORS (localhost + render)
 app.use(cors({
   origin: [
     "http://localhost:5173",

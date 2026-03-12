@@ -58,7 +58,6 @@ function Topbar() {
 
         <div className="h-8 w-[1px] bg-slate-100 mx-2"></div>
 
-        {/* Profile */}
         <motion.div
           whileHover={{ scale: 1.02 }}
           className="flex items-center gap-3 cursor-pointer group"

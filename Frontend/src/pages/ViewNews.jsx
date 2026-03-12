@@ -32,7 +32,6 @@ function ViewNews() {
         </motion.div>
 
         <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="rounded-[3.5rem] overflow-hidden shadow-2xl bg-black mb-12 border border-slate-100">
-          {/* ✅ वीडियो और इमेज का src सीधा 'news.image' से लोड करें */}
           {news.image && (news.image.includes(".mp4") || news.image.includes(".mov")) ? (
             <video controls className="w-full h-auto max-h-[600px]">
               <source src={news.image} type="video/mp4" />

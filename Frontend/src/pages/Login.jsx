@@ -8,49 +8,59 @@ function Login() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ email: "", password: "" });
+
+  const [form, setForm] = useState({
+    email: "",
+    password: ""
+  });
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
   };
 
- const login = async (e) => {
-  e.preventDefault();
+  const login = async (e) => {
+    e.preventDefault();
 
-  try {
+    try {
 
-    setLoading(true);
+      setLoading(true);
 
-    const res = await API.post("/api/auth/login", form, {
-      withCredentials: true
-    });
+      const res = await API.post("/api/auth/login", form);
 
-    console.log(res.data);
+      console.log("LOGIN RESPONSE:", res.data);
 
-    if (res.data && res.data.user) {
+      if (res.status === 200 && res.data?.token) {
 
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      toast.success("Login Successful!");
+        toast.success("Login Successful!");
 
-      navigate("/dashboard");
+        navigate("/dashboard");
 
-    } else {
+      } else {
 
-      toast.error("Invalid response from server");
+        toast.error("Invalid response from server");
+
+      }
+
+    } catch (error) {
+
+      console.log("LOGIN ERROR:", error);
+
+      toast.error(
+        error.response?.data?.message || "Login Failed"
+      );
+
+    } finally {
+
+      setLoading(false);
 
     }
-
-  } catch (error) {
-
-    toast.error(error.response?.data?.message || "Login Failed");
-
-  } finally {
-
-    setLoading(false);
-
-  }
-};
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F1F5F9] font-sans selection:bg-blue-100">
@@ -68,7 +78,9 @@ function Login() {
               <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/40">
                 <Newspaper size={20} />
               </div>
-              <span className="font-black text-xl tracking-tighter uppercase">Journalist CMS</span>
+              <span className="font-black text-xl tracking-tighter uppercase">
+                Journalist CMS
+              </span>
             </div>
             
             <h1 className="text-5xl font-bold text-white leading-tight">
@@ -88,7 +100,9 @@ function Login() {
         <div className="w-full lg:w-1/2 bg-white p-10 md:p-16 flex flex-col justify-center">
 
           <div className="mb-10">
-            <h2 className="text-3xl font-black text-slate-800 tracking-tight">Welcome Back</h2>
+            <h2 className="text-3xl font-black text-slate-800 tracking-tight">
+              Welcome Back
+            </h2>
             <p className="text-slate-400 font-medium mt-2 text-sm">
               Please enter your credentials to log in.
             </p>
@@ -103,11 +117,15 @@ function Login() {
               </label>
 
               <div className="relative group">
-                <Mail className="absolute left-4 top-3.5 text-slate-300 group-focus-within:text-blue-600 transition-colors" size={18} />
+                <Mail
+                  className="absolute left-4 top-3.5 text-slate-300 group-focus-within:text-blue-600 transition-colors"
+                  size={18}
+                />
 
                 <input
                   type="email"
                   name="email"
+                  value={form.email}
                   onChange={handleChange}
                   placeholder="name@portal.com"
                   required
@@ -125,11 +143,15 @@ function Login() {
 
               <div className="relative group">
 
-                <Lock className="absolute left-4 top-3.5 text-slate-300 group-focus-within:text-blue-600 transition-colors" size={18} />
+                <Lock
+                  className="absolute left-4 top-3.5 text-slate-300 group-focus-within:text-blue-600 transition-colors"
+                  size={18}
+                />
 
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
+                  value={form.password}
                   onChange={handleChange}
                   placeholder="••••••••"
                   required

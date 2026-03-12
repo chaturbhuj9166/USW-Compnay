@@ -29,7 +29,6 @@ function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-screen w-72 z-[60] bg-[#0F172A] border-r border-white/5 flex flex-col shadow-[10px_0_40px_rgba(0,0,0,0.3)]">
       
-      {/* 1. Brand Section */}
       <div className="p-8 pb-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
@@ -42,7 +41,6 @@ function Sidebar() {
         </div>
       </div>
 
-      {/* 2. Navigation Area */}
       <nav className="flex-1 overflow-y-auto px-6 py-4 space-y-1 custom-scrollbar">
         <div className="text-[10px] uppercase tracking-[3px] font-black text-slate-500 mb-4 mt-2 px-2">Main Menu</div>
         
@@ -62,7 +60,6 @@ function Sidebar() {
           <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
         </NavLink>
 
-        {/* Note: Path matched with PostNews component */}
         <NavLink to="/post-news" className={linkClass}>
           <div className="flex items-center gap-3">
             <PlusCircle size={18} />
@@ -73,7 +70,7 @@ function Sidebar() {
 
         <div className="pt-10 text-[10px] uppercase tracking-[3px] font-black text-slate-500 mb-4 px-2">Account</div>
 
-        {/* Fixed Profile Route */}
+     
         <NavLink to="/profile" className={linkClass}>
           <div className="flex items-center gap-3">
             <UserCircle size={18} />
@@ -82,7 +79,7 @@ function Sidebar() {
           <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
         </NavLink>
 
-        {/* Fixed Settings Route */}
+     
         <NavLink to="/settings" className={linkClass}>
           <div className="flex items-center gap-3">
             <Settings size={18} />
@@ -92,7 +89,6 @@ function Sidebar() {
         </NavLink>
       </nav>
 
-      {/* 3. Bottom Footer Area */}
       <div className="p-6 space-y-4">
         <div className="bg-gradient-to-br from-slate-800/80 to-slate-900 border border-white/5 rounded-2xl p-4 relative overflow-hidden group">
           <div className="relative z-10">

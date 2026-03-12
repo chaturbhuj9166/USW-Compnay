@@ -22,7 +22,7 @@ function PostNews() {
   const handleFile = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // 10MB से बड़ी फाइल को रोकना (Cloudinary Free Tier limit)
+      // 10MB(Cloudinary Free Tier limit)
       if (file.size > 10 * 1024 * 1024) {
         return toast.error("File size too large! Max 10MB allowed.");
       }
@@ -46,7 +46,6 @@ function PostNews() {
     e.preventDefault();
     const userName = getUserName();
     
-    // ✅ FormData का सही इस्तेमाल
     const formData = new FormData();
     formData.append("title", form.title);
     formData.append("description", form.description);
@@ -54,14 +53,12 @@ function PostNews() {
     formData.append("journalistName", userName);
 
     if (imageFile) {
-      // Backend में 'image' नाम से ही पकड़ा जाएगा
       formData.append("image", imageFile);
     }
 
     try {
       setLoading(true);
       
-      // ✅ API Call: इसमें headers में Content-Type देने की ज़रूरत नहीं होती, Axios खुद संभाल लेता है
       await API.post("/api/news/post-news", formData);
 
       toast.success(`Published as ${userName} 🔥`);
