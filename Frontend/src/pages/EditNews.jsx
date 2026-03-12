@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../config/api"
 import { Save, ArrowLeft, Loader2, Tag, Type, AlignLeft, Camera, X } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -17,7 +17,7 @@ function EditNews() {
     const fetchSingleNews = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:5000/api/news/single/${id}`);
+        const res = await API.get(`/api/news/single/${id}`);
         if (res.data) {
           setFormData({
             title: res.data.title || "",
@@ -56,7 +56,7 @@ function EditNews() {
     if (imageFile) { dataToSend.append("image", imageFile); }
 
     try {
-      await axios.put(`http://localhost:5000/api/news/update/${id}`, dataToSend, {
+      await axios.put(`/api/news/update/${id}`, dataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Article Updated Successfully! ✨");
