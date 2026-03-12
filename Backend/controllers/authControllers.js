@@ -52,11 +52,10 @@ export const login = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    // ✅ cookie set
     res.cookie("auth_token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000
     });
 
