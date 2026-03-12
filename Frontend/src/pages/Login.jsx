@@ -1,10 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Eye, EyeOff, Lock, Mail, ChevronRight, Newspaper } from "lucide-react";
 import API from "../config/api";
-
 
 function Login() {
   const navigate = useNavigate();
@@ -16,25 +14,47 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
- const login = async (e) => {
+  const login = async (e) => {
     e.preventDefault();
+
     try {
       setLoading(true);
-      const res = await API.post("/api/auth/login", form);
-      console.log("Login response:", res.data); // Debugging output
-      if (res.data && res.data.token && res.data.user) {
-        localStorage.setItem("token", res.data.token);
+
+      const res = await API.post(
+        "/api/auth/login",
+        form,
+        { withCredentials: true }
+      );
+
+      console.log("Login response:", res.data);
+
+      if (res.data && res.data.user) {
+
+        // user info store (token cookie me hai backend par)
         localStorage.setItem("user", JSON.stringify(res.data.user));
+
         toast.success("Login Successful!");
+
         navigate("/dashboard");
+
       } else {
-        toast.error("Invalid response from server. Please try again later.");
+
+        toast.error("Invalid response from server");
+
       }
+
     } catch (error) {
-      console.error("Login error:", error, error.response);
-      toast.error(error.response?.data?.message || "Login Failed");
+
+      console.error("Login error:", error);
+
+      toast.error(
+        error.response?.data?.message || "Login Failed"
+      );
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
@@ -44,9 +64,9 @@ function Login() {
       {/* Main Container */}
       <div className="w-full max-w-5xl h-[600px] flex shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] rounded-[2.5rem] overflow-hidden border border-white m-4">
         
-        {/* LEFT SIDE: Branding (Deep Navy) */}
+        {/* LEFT SIDE */}
         <div className="hidden lg:flex lg:w-1/2 bg-[#0F172A] p-12 flex-col justify-between relative overflow-hidden">
-          {/* Subtle Glow */}
+          
           <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] -mr-40 -mt-40"></div>
           
           <div className="relative z-10">
@@ -62,31 +82,35 @@ function Login() {
               <span className="text-blue-500">Stories</span> with <br />
               Precision.
             </h1>
+
             <p className="text-slate-400 mt-6 max-w-sm leading-relaxed">
-              सच्चाई को दुनिया के सामने लाना आपका काम है, उसे मैनेज करना हमारा। एक सुरक्षित और प्रोफेशनल प्लेटफॉर्म में आपका स्वागत है।
+              सच्चाई को दुनिया के सामने लाना आपका काम है, उसे मैनेज करना हमारा।
             </p>
           </div>
 
-          <div className="relative z-10 flex gap-2">
-            <div className="w-8 h-1 bg-blue-600 rounded-full"></div>
-            <div className="w-2 h-1 bg-slate-700 rounded-full"></div>
-            <div className="w-2 h-1 bg-slate-700 rounded-full"></div>
-          </div>
         </div>
 
-        {/* RIGHT SIDE: Login Form (Pure White) */}
+        {/* RIGHT SIDE */}
         <div className="w-full lg:w-1/2 bg-white p-10 md:p-16 flex flex-col justify-center">
+
           <div className="mb-10">
             <h2 className="text-3xl font-black text-slate-800 tracking-tight">Welcome Back</h2>
-            <p className="text-slate-400 font-medium mt-2 text-sm">Please enter your credentials to log in.</p>
+            <p className="text-slate-400 font-medium mt-2 text-sm">
+              Please enter your credentials to log in.
+            </p>
           </div>
 
           <form onSubmit={login} className="space-y-6">
-            {/* Email Field */}
+
+            {/* Email */}
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-[2px] font-black text-slate-400 block ml-1">Official Email</label>
+              <label className="text-[10px] uppercase tracking-[2px] font-black text-slate-400 block ml-1">
+                Official Email
+              </label>
+
               <div className="relative group">
                 <Mail className="absolute left-4 top-3.5 text-slate-300 group-focus-within:text-blue-600 transition-colors" size={18} />
+
                 <input
                   type="email"
                   name="email"
@@ -98,14 +122,17 @@ function Login() {
               </div>
             </div>
 
-            {/* Password Field */}
+            {/* Password */}
             <div className="space-y-2">
-              <div className="flex justify-between items-center ml-1">
-                <label className="text-[10px] uppercase tracking-[2px] font-black text-slate-400 block">Password</label>
-                <a href="#" className="text-[10px] font-bold text-blue-600 uppercase tracking-wider hover:underline">Forgot?</a>
-              </div>
+
+              <label className="text-[10px] uppercase tracking-[2px] font-black text-slate-400 block ml-1">
+                Password
+              </label>
+
               <div className="relative group">
+
                 <Lock className="absolute left-4 top-3.5 text-slate-300 group-focus-within:text-blue-600 transition-colors" size={18} />
+
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
@@ -114,6 +141,7 @@ function Login() {
                   required
                   className="w-full bg-slate-50 border border-slate-100 pl-12 pr-12 py-3.5 rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500 transition-all font-medium text-slate-700"
                 />
+
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -121,10 +149,11 @@ function Login() {
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
+
               </div>
             </div>
 
-            {/* Login Button */}
+            {/* Button */}
             <button
               disabled={loading}
               className="w-full bg-[#0F172A] text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-[3px] shadow-2xl shadow-slate-900/20 hover:bg-blue-600 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-2 mt-4"
@@ -132,16 +161,20 @@ function Login() {
               {loading ? "Authenticating..." : "Sign In"}
               <ChevronRight size={16} />
             </button>
+
           </form>
 
-          {/* Footer */}
           <p className="text-center mt-10 text-slate-400 text-xs font-bold uppercase tracking-widest">
-            New to the portal? 
-            <Link to="/register" className="text-blue-600 ml-2 hover:underline">Create Account</Link>
+            New to the portal?
+            <Link to="/register" className="text-blue-600 ml-2 hover:underline">
+              Create Account
+            </Link>
           </p>
+
         </div>
 
       </div>
+
     </div>
   );
 }

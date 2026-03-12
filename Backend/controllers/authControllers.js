@@ -29,33 +29,58 @@ export const register = async (req, res) => {
 
 
 
-
 export const login = async (req, res) => {
   try {
+
     const { email, password } = req.body;
+
     const user = await Journalist.findOne({ email });
 
-    if (!user) return res.status(400).json({ message: "User not found" });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
 
     const token = jwt.sign(
-      { id: user._id }, 
-      process.env.JWT_SECRET || "fallback_secret", // ✅ .env से की उठाएगा
+      { id: user._id },
+      process.env.JWT_SECRET || "fallback_secret",
       { expiresIn: "1d" }
     );
 
-    res.json({ token, user });
+    // ✅ cookie set
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000
+    });
+
+    res.status(200).json({
+      success: true,
+      user
+    });
+
   } catch (error) {
-    res.status(500).json({ message: "Login error", error: error.message });
+
+    res.status(500).json({
+      message: "Login error",
+      error: error.message
+    });
+
   }
 };
 
-// ... बाकी register और logout वैसे ही रहेंगे
+
 
 export const logout = async (req, res) => {
   try {
+
+    res.clearCookie("auth_token");
 
     res.status(200).json({
       success: true,

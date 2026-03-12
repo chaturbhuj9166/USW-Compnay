@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import connectDB from "./config/db.js";
+import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes.js";
 import newsRoutes from "./routes/newsRoutes.js";
@@ -11,6 +12,7 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 dotenv.config();
 const app = express();
+app.use(cookieParser());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,7 +23,8 @@ app.use(cors({
     "http://localhost:5173",
     "https://usw-compnay.onrender.com"
   ],
-  credentials: true
+  credentials: true,
+  methods: ["GET","POST","PUT","DELETE"],
 }));
 
 app.use(express.json());
