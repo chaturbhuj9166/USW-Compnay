@@ -49,18 +49,31 @@ export const updateNews = async (req, res) => {
 
 export const getDashboardStats = async (req, res) => {
   try {
+
     const totalNews = await News.countDocuments();
-  
-    const journalists = await News.distinct("contributor"); 
+
+    const journalists = await News.distinct("contributor");
+
     const categories = await News.distinct("category");
+
+    const recentNews = await News
+      .find()
+      .sort({ createdAt: -1 })
+      .limit(10);
 
     res.json({
       totalNews,
       journalists: journalists.length,
-      categories: categories.length
+      categories: categories.length,
+      recentNews
     });
+
   } catch (error) {
-    res.status(500).json({ message: "Error fetching stats" });
+
+    res.status(500).json({
+      message: "Error fetching stats"
+    });
+
   }
 };
 
